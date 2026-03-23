@@ -42,22 +42,22 @@ export const PokemonTypeSchema = z.enum([
   PokemonType.WATER,
 ]);
 
+const PokemonTypeArraySchema = z
+  .array(PokemonTypeSchema)
+  .refine((types) => new Set(types).size === types.length, {
+    message: "Types must be unique",
+  });
+
 export const PokemonSchema = z.object({
   name: z.string(),
-  types: z
-    .array(PokemonTypeSchema)
-    .min(1)
-    .max(2)
-    .refine((types) => new Set(types).size === types.length, {
-      message: "Types must be unique",
-    }),
+  types: PokemonTypeArraySchema.min(1).max(2),
 });
 export type Pokemon = z.infer<typeof PokemonSchema>;
 
 export const EffectivenessSchema = z.object({
-  weaknesses: z.array(PokemonTypeSchema),
-  resistances: z.array(PokemonTypeSchema),
-  immunities: z.array(PokemonTypeSchema),
+  weaknesses: PokemonTypeArraySchema,
+  resistances: PokemonTypeArraySchema,
+  immunities: PokemonTypeArraySchema,
 });
 export type Effectiveness = z.infer<typeof EffectivenessSchema>;
 
