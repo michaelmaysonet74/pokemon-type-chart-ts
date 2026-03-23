@@ -44,7 +44,13 @@ export const PokemonTypeSchema = z.enum([
 
 export const PokemonSchema = z.object({
   name: z.string(),
-  types: z.array(PokemonTypeSchema).min(1).max(2),
+  types: z
+    .array(PokemonTypeSchema)
+    .min(1)
+    .max(2)
+    .refine((types) => new Set(types).size === types.length, {
+      message: "Types must be unique",
+    }),
 });
 export type Pokemon = z.infer<typeof PokemonSchema>;
 
