@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { logger } from "hono/logger";
 import { sValidator } from "@hono/standard-validator";
 
 import { getEffectivenessResponse } from "./effectiveness";
@@ -10,6 +11,8 @@ import {
 } from "./schema";
 
 const app = new Hono();
+
+app.use(logger());
 
 app.post(
   "/pokemon/effectiveness",
