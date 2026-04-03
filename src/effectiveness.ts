@@ -7,27 +7,33 @@ import {
 } from "./schema";
 
 const merge = (charts: Effectiveness[]): Effectiveness => {
-  const weaknesses = charts.flatMap(({ weaknesses }) => weaknesses).sort();
-  const resistances = charts.flatMap(({ resistances }) => resistances).sort();
-  const immunities = charts.flatMap(({ immunities }) => immunities).sort();
+  const weaknesses = new Set(
+    charts.flatMap(({ weaknesses }) => weaknesses).toSorted(),
+  );
+
+  const resistances = new Set(
+    charts.flatMap(({ resistances }) => resistances).toSorted(),
+  );
+
+  const immunities = new Set(
+    charts.flatMap(({ immunities }) => immunities).toSorted(),
+  );
 
   return {
     weaknesses: Array.from(
-      new Set(
-        weaknesses.filter((t) => ![...resistances, ...immunities].includes(t)),
-      ),
+      weaknesses.difference(resistances.union(immunities)),
     ),
     resistances: Array.from(
-      new Set(
-        resistances.filter((t) => ![...weaknesses, ...immunities].includes(t)),
-      ),
+      resistances.difference(weaknesses.union(immunities)),
     ),
-    immunities,
+    immunities: Array.from(immunities),
   };
 };
 
-const calculate = (types: PokemonType[]): Effectiveness =>
-  merge(types.map(getChartByType));
+const calculate = (types: PokemonType[]): Effectiveness => {
+  const charts = types.map(getChartByType);
+  return charts.length === 1 ? charts[0] : merge(charts);
+};
 
 export const getEffectivenessResponse = (
   pokemon: Pokemon,
