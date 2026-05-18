@@ -8,6 +8,6 @@
     "allowSyntheticDefaultImports": true,
     "module": "esnext",
     "lib": ["esnext"],
-    "types": ["bun"],
+    "types": ["node"],
   }
 }

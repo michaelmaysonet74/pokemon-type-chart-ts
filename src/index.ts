@@ -1,5 +1,6 @@
 import { Hono } from "hono";
 import { logger } from "hono/logger";
+import { serve } from "@hono/node-server";
 import { sValidator } from "@hono/standard-validator";
 
 import { getEffectivenessResponse } from "./effectiveness";
@@ -11,6 +12,7 @@ import {
 } from "./schema";
 
 const app = new Hono();
+const port = process.env.PORT ? parseInt(process.env.PORT) : 4001;
 
 app.use(logger());
 
@@ -29,7 +31,7 @@ app.post(
   },
 );
 
-export default {
+serve({
   fetch: app.fetch,
-  port: Bun.env.PORT ?? 4001,
-};
+  port,
+});

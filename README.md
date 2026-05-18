@@ -4,22 +4,18 @@ Microservice for retrieving Pokémon type effectiveness chart.
 
 ## Getting Started
 
-### Requirements
-
-- Bun `v1.3.11`
-
 ### Usage
 
 Install dependencies:
 
 ```sh
-bun install
+npm install
 ```
 
 Start the server:
 
 ```sh
-bun run dev
+npm run dev
 ```
 
 Send a POST request to `/pokemon/effectiveness` with a JSON body:
