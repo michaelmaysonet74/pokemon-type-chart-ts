@@ -1,4 +1,4 @@
-import typeChartJson from "../resources/type-charts.json";
+import typeChartJson from "../resources/type-charts.json" with { type: "json" };
 import { Effectiveness, PokemonType } from "./schema";
 
 type TypeChart = {
