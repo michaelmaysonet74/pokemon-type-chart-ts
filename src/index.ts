@@ -31,7 +31,4 @@ app.post(
   },
 );
 
-serve({
-  fetch: app.fetch,
-  port,
-});
+serve({ ...app, port });
